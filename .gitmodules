@@ -1,0 +1,3 @@
+[submodule "src/mswlib"]
+	path = src/mswlib
+	url = git@github.com:maxie-systems/web-lib.git
