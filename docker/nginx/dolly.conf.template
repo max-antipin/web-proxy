@@ -1,0 +1,28 @@
+server {
+    listen 80;
+    server_name ${SERVER_NAME} www.${SERVER_NAME} *.${SERVER_NAME};
+    index index.php;
+    access_log off;
+    root /var/www/html/public/;
+
+    location /dolly-sites/v2 {
+        root /var/www/html/public-dolly/;
+        try_files /index.php =404;
+        fastcgi_pass php:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+    location /dolly-sites/v2 {
+        root /var/www/html/public-dolly/;
+        try_files /index.php =404;
+        fastcgi_pass php:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+    location / {
+        try_files /index.php =404;
+        fastcgi_pass php:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
