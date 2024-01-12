@@ -1,1 +1,9 @@
 *
+!.docker/php/
+!composer.*
+!phpunit.xml
+!public/
+!public-dolly/
+!src/
+!templates/
+!tests/

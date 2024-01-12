@@ -1,31 +1,18 @@
 version: '3.8'
-name: web-proxy-dev
+name: 'web-proxy-test'
 services:
   php:
-#    container_name: dolly-php-dev
-    build:
-#      args:
- #       - APP_ENV=value_test
-      target: php_dev
-    image: max-antipin/${COMPOSE_PROJECT_NAME}-php
+    container_name: ${COMPOSE_PROJECT_NAME}-php-app-test
+    image: localhost:5000/max-antipin/web-proxy-php-app:test
     restart: unless-stopped
-    volumes:
-      - .:/var/www/html/
   webserver:
-    build:
-#      args:
- #       NGINX_VERSION: 
-      context: .
-      dockerfile: ./.docker/nginx.Dockerfile
-#    container_name: dolly-nginx-dev
-#    depends_on:
- #     - php
+    container_name: ${COMPOSE_PROJECT_NAME}-nginx
     environment:
       - SERVER_NAME=dolly-proxy.local
       - DOLLY_SERVER_NAME=dolly-sites.local
 #    env_file:
 #      - ./.env.app
-    image: max-antipin/${COMPOSE_PROJECT_NAME}-nginx
+    image: localhost:5000/max-antipin/web-proxy-nginx
     ports:
       - target: 80
         published: ${HTTP_PORT:-80}
@@ -37,7 +24,7 @@ services:
         published: ${HTTP3_PORT:-443}
         protocol: udp
 #    read_only: true
-    restart: unless-stopped
+    restart: always
 #    volumes:
 #      - ./docker/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
 #      - ./docker/nginx/x-catch-all.conf:/etc/nginx/conf.d/x-catch-all.conf:ro

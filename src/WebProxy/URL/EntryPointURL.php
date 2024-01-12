@@ -1,6 +1,6 @@
 <?php
 
-namespace MaxieSystems\WebProxy;
+namespace MaxieSystems\WebProxy\URL;
 
 use MaxieSystems\Exception\URL\InvalidSchemeException;
 use MaxieSystems\URL;
