@@ -33,21 +33,10 @@ target "php_test" {
   target = "php_app_test"
 }
 
-target "webserver" {
-  dockerfile = "./.docker/nginx.Dockerfile"
-  inherits = ["_common"]
-#  secret = [
- #   "type=env,id=KUBECONFIG",
-  #  "type=file,id=aws,src=${HOME}/.aws/credentials"
-  #]
-  tags = [ MakeFQIN("nginx", "latest") ]
-#  target = "php_app_test"
-}
-
 group "default" {
-  targets = [ "php", "webserver" ]
+  targets = [ "php", "php_test" ]
 }
 
 group "test" {
-  targets = [ "php_test", "webserver" ]
+  targets = [ "php_test" ]
 }

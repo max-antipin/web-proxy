@@ -1,0 +1,25 @@
+access_log off;
+
+server {
+    listen 80;
+    server_name ${SERVER_NAME} www.${SERVER_NAME} *.${SERVER_NAME};
+    root /var/www/html/public/;
+
+    location / {
+        fastcgi_pass php:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+    }
+}
+
+server {
+    listen 80;
+    server_name ${DOLLY_SERVER_NAME} www.${DOLLY_SERVER_NAME} *.${DOLLY_SERVER_NAME};
+    root /var/www/html/public-dolly/;
+
+    location / {
+        fastcgi_pass php:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+    }
+}

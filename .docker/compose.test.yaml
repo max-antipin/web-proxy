@@ -1,44 +1,35 @@
 version: '3.8'
-name: 'web-proxy-test'
+name: web-proxy
 services:
   php:
-    container_name: ${COMPOSE_PROJECT_NAME}-php-app-test
-    image: localhost:5000/max-antipin/web-proxy-php-app:test
+    container_name: ${COMPOSE_PROJECT_NAME}-php-app-${APP_TAG:-test}
+    image: localhost:5000/max-antipin/web-proxy-php-app:${APP_TAG:-test}
     restart: unless-stopped
   webserver:
+    configs:
+      - source: nginx_conf
+        target: /etc/nginx/templates/default.conf.template
     container_name: ${COMPOSE_PROJECT_NAME}-nginx
     environment:
       - SERVER_NAME=dolly-proxy.local
       - DOLLY_SERVER_NAME=dolly-sites.local
-#    env_file:
-#      - ./.env.app
-    image: localhost:5000/max-antipin/web-proxy-nginx
+    image: nginx:${NGINX_VERSION:-1.24}-alpine
     ports:
       - target: 80
-        published: ${HTTP_PORT:-80}
+        published: ${SERVER_PORT:-80}
         protocol: tcp
-      - target: 443
-        published: ${HTTPS_PORT:-443}
-        protocol: tcp
-      - target: 443
-        published: ${HTTP3_PORT:-443}
-        protocol: udp
-#    read_only: true
-    restart: always
-#    volumes:
-#      - ./docker/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
-#      - ./docker/nginx/x-catch-all.conf:/etc/nginx/conf.d/x-catch-all.conf:ro
-#      - ./docker/nginx/x-catch-all.conf:/etc/nginx/x-catch-all.conf:ro
-#      - ./docker/nginx-dev/default.conf:/etc/nginx/conf.d/default.conf:ro
-#      - ./public/:/var/www/html/public/:ro
-#      - ./public-dolly/:/var/www/html/public-dolly/:ro
-#      - ./http_404.html:/usr/share/nginx/html/http_404.html:ro
-#      - nginx-cache:/var/cache/nginx/
-#      - nginx-pid:/var/run/
-#      - nginx-log:/var/log/nginx/
-#      - SCRIPT_DIR=/my/sub-folder/
-#      - DOLLY_DIR=/dolly-sites/v2/
-#volumes:
-#  nginx-cache:
-#  nginx-pid:
-#  nginx-log:
+    read_only: true
+    restart: unless-stopped
+    volumes:
+      - nginx-cache:/var/cache/nginx/
+      - nginx-conf:/etc/nginx/conf.d/
+      - nginx-pid:/var/run/
+      - nginx-log:/var/log/nginx/
+configs:
+  nginx_conf:
+    file: ./nginx/default.conf.template
+volumes:
+  nginx-cache:
+  nginx-conf:
+  nginx-pid:
+  nginx-log:
