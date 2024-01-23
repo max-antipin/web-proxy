@@ -23,3 +23,9 @@ server {
         fastcgi_param SCRIPT_FILENAME $document_root/index.php;
     }
 }
+
+server {
+    listen 80 default_server;
+    server_name _;
+    return 404;
+}

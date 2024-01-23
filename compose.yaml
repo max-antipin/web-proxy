@@ -14,9 +14,7 @@ services:
       - source: nginx_conf
         target: /etc/nginx/templates/default.conf.template
     container_name: ${COMPOSE_PROJECT_NAME}-nginx-dev
-    environment:
-      - SERVER_NAME=dolly-proxy.local
-      - DOLLY_SERVER_NAME=dolly-sites.local
+    env_file: ${SERVER_ENV_FILE:-./.env.app.dist}
     image: nginx:${NGINX_VERSION:-1.24}-alpine
     ports:
       - target: 80
