@@ -52,9 +52,9 @@ class Engine extends WebProxy\Engine
         // $this->SetOptionsData($options);
     }
 
-    public function createProxyFromSource(WebProxy\SourceURL $source_url): WebProxy\ProxyURL
+    public function createProxyFromSource(WebProxy\URL\SourceURL $source_url): WebProxy\URL\ProxyURL
     {
-        return new WebProxy\ProxyURL($source_url, $this->config, function(WebProxy\SourceURL $url, string &$host){
+        return new WebProxy\URL\ProxyURL($source_url, $this->config, function(WebProxy\URL\SourceURL $url, string &$host){
             $host;
         });
     }

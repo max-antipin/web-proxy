@@ -2,7 +2,8 @@
 
 namespace MaxieSystems\WebProxy;
 
-use MaxieSystems\URL;
+use MaxieSystems\WebProxy\URL\ProxyURL;
+use MaxieSystems\WebProxy\URL\SourceURL;
 use MaxieSystems\URLReadOnly;
 
 class EngineImplementation extends \MaxieSystems\WebProxy\Engine

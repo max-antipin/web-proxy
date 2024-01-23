@@ -17,27 +17,18 @@ new PSR4Autoloader([
 
 $serv = new WebProxy\WebServer\Request();
 //var_dump((string)$serv->request_url);
-
-$engine = new WebProxy\EngineImplementation($serv->request_url, new WebProxy\Config());
 try {
-    $engine();
+    $engine = new \DollySites\Engine($serv->request_url,
+        (object)[
+            'script_url' => ['path' => '/site-copy/'],
+            'source_url' => 'https://rncb.ru',
+        ]);
 } catch (WebProxy\Exception\InvalidSourceException $e) {
-    // где-то нужно сделать api - адрес для отправки формы с url, после которого происходит редирект.
-    if ('POST' === $_SERVER['REQUEST_METHOD']) {
-        if (isset($_POST['url'])) {
-//https://www.w3.org/TR/WD-html40-970917/htmlweb.html //- здесь на странице есть ftp-ссылки.
-//use MaxieSystems\Exception\URL\InvalidHostException;
-            $url = new WebProxy\URL\EntryPointURL(trim($_POST['url']));// это - source URL, поскольку он указывает непосредственно на сайт-источник.
-  //        if ($engine->getURLConverter($url))
-            header('Location: ' . $engine->createProxyFromSource($url), true, 303);
-            exit();
-        }
-        http_response_code(400);
-    } else {
-        require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'main.html';
-    }
+    echo 'отправить в админку для ввода адреса сайта';
     exit();
 }
+$engine($serv->request_url);
+
 /* require_once('.'.DIRECTORY_SEPARATOR.'system'.DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'sys_config.php');
 set_error_handler(['Config', 'HandleError'], E_STRICT & E_DEPRECATED & E_USER_DEPRECATED);// !!!
 Config::DisplayErrors(true);// !!!

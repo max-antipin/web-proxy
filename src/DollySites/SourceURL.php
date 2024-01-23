@@ -2,10 +2,9 @@
 
 namespace DollySites;
 
-use MaxieSystems\URL;
 //use MaxieSystems\URLReadOnly;
 
-class SourceURL extends \MaxieSystems\WebProxy\SourceURL
+class SourceURL extends \MaxieSystems\WebProxy\URL\SourceURL
 {
 /*	protected function onCreate(URL $url): void
 	{

@@ -2,6 +2,8 @@
 
 namespace MaxieSystems\WebProxy;
 
+use MaxieSystems\WebProxy\URL\ProxyURL;
+use MaxieSystems\WebProxy\URL\SourceURL;
 use MaxieSystems\URL;
 //use MaxieSystems\URLInterface;
 use MaxieSystems\URLReadOnly;
@@ -106,7 +108,7 @@ abstract class Engine// implements MS\IEvents
         if ($this->unpackSourceOriginFromPath($url)) {
 
         } else {
-            $url->copy($this->GetSource(), 'origin');
+            $url->copy($this->getSource(), 'origin');
         }
         //var_dump($url);
         return new SourceURL($url);
@@ -147,7 +149,7 @@ abstract class Engine// implements MS\IEvents
         return [];
     }
 
-    protected function GetSource(): URLReadOnly
+    protected function getSource(): URLReadOnly
     {
         return $this->source;
     }
@@ -312,7 +314,9 @@ abstract class Engine// implements MS\IEvents
         // if(null === $this->url_type) throw new \Exception('Invalid URL type: '.MS\Config::GetVarType($this->url_type));
         // if($c = $this->GetOption('filter_url')) $this->ApplyFilter($c, $this->source_url);// фильтр не должен быть здесь, он должен быть при сохранении URL в документе. Но!!! В некоторых случаях здесь может быть фильтрация: например, склейка /index.php, /index.html & /. Но параметры типа fbclid не нужно фильтровать здесь, поскольку они могут быть подставлены вместо оригинальных; а вот те, что открывают редактор или конструктор форм можно фильтровать всегда. А зачем отправлять новый fbclid на сайт-источник? Где удаление "плохих" параметров происходит в dolly 1???
         // $opts = new MS\Containers\Data(['cached' => ['type' => 'bool,null', 'set' => true], 'url_type' => ['type' => 'int', 'value' => $this->url_type]]);
-        echo $src_url;
+        //echo $src_url;
+        $content = file_get_contents("$src_url");
+        echo $content;
         die;
         if ('POST' === $_SERVER['REQUEST_METHOD']) {
             $response = $this->GetResponse($src_url, $_POST, 'POST');
