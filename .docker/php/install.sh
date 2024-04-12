@@ -1,13 +1,14 @@
-#!/bin/bash
+#!/bin/sh
+set -eu
 
-set -eux
-
-apt-get update
-apt-get upgrade -yq
-apt-get install -yq --no-install-recommends \
+apk update
+apk upgrade
+apk add --no-cache \
   libzip-dev \
+  linux-headers \
   unzip \
-  zlib1g-dev
+  zlib-dev
+apk add --update --no-cache --virtual .build-dependencies $PHPIZE_DEPS
 docker-php-ext-install zip
 
 if [ "$1" = '--no-dev' ]; then
@@ -22,6 +23,5 @@ else
   exit 1
 fi
 
-apt-get clean
-rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-rm -f /var/log/lastlog /var/log/faillog
+apk del .build-dependencies
+rm -rf /tmp/* /var/tmp/*

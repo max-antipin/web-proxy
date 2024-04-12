@@ -5,7 +5,7 @@ ARG COMPOSER_VERSION=2.6
 
 FROM composer:${COMPOSER_VERSION} AS composer_image
 
-FROM php:${PHP_VERSION}-fpm AS php_image
+FROM php:${PHP_VERSION}-fpm-alpine AS php_image
 LABEL org.opencontainers.image.licenses="proprietary" \
       org.opencontainers.image.url="https://github.com/max-antipin/web-proxy" \
       org.opencontainers.image.vendor="Max Antipin <max.v.antpin@gmail.com>" \
@@ -16,9 +16,9 @@ ARG PRODUCT_NAME="Maxie Systems Web Proxy"
 
 FROM php_image AS php_dev
 LABEL org.opencontainers.image.description="${PRODUCT_NAME} development environment"
-RUN --mount=type=bind,source=.docker/php/install.sh,target=install.sh \
-    --mount=type=bind,source=.docker/php/xdebug.ini,target=xdebug.ini \
-  set -eux && ./install.sh --dev
+RUN --mount=type=bind,source=php/install.sh,target=install.sh \
+    --mount=type=bind,source=php/xdebug.ini,target=xdebug.ini \
+  set -eux && sh ./install.sh --dev
 COPY --from=composer_image /usr/bin/composer /usr/local/bin/composer
 
 FROM php_dev AS php_app_test
@@ -30,8 +30,8 @@ RUN set -eux; \
 
 FROM php_image AS php_app
 LABEL org.opencontainers.image.description="${PRODUCT_NAME} application"
-RUN --mount=type=bind,source=.docker/php/install.sh,target=install.sh \
-  set -eux && ./install.sh --no-dev
+RUN --mount=type=bind,source=php/install.sh,target=install.sh \
+  set -eux && sh ./install.sh --no-dev
 COPY --link --parents ./public/ ./public-dolly/ ./src/ ./templates/ ./
 RUN --mount=type=bind,source=composer.json,target=composer.json \
     --mount=type=bind,source=composer.lock,target=composer.lock \

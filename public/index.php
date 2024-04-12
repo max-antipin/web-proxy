@@ -7,14 +7,14 @@ namespace MaxieSystems;
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-const INC_DIR = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
+/*const INC_DIR = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR;
 require INC_DIR . 'PSR4Autoloader.php';
 new PSR4Autoloader([
     'MaxieSystems\\WebProxy' => 'WebProxy',
     'MaxieSystems' => 'mswlib' . DIRECTORY_SEPARATOR . 'src',
     'DollySites' => 'DollySites',
-]);
-
+]);*/
+require_once(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');
 $serv = new WebProxy\WebServer\Request();
 //var_dump((string)$serv->request_url);
 

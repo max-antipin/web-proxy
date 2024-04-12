@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MaxieSystems\WebProxy\URL;
 
-use MaxieSystems\URL\Query;
+use MaxieSystems\URLType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
