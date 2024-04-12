@@ -1,21 +1,24 @@
 version: '3.8'
-name: web-proxy
+name: web-proxy-dev
 services:
   php:
     build:
       target: php_dev
-    container_name: ${COMPOSE_PROJECT_NAME}-php-dev
-    image: max-antipin/${COMPOSE_PROJECT_NAME}-php-dev
+#    configs:
+#      - source: dolly_conf
+#        target: /var/www/html/conf.php
+    container_name: ${COMPOSE_PROJECT_NAME}-php
+    image: max-antipin/${COMPOSE_PROJECT_NAME}-php
     restart: unless-stopped
     volumes:
-      - .:/var/www/html/
+      - ../:/var/www/html/
   webserver:
     configs:
       - source: nginx_conf
         target: /etc/nginx/templates/default.conf.template
-    container_name: ${COMPOSE_PROJECT_NAME}-nginx-dev
+    container_name: ${COMPOSE_PROJECT_NAME}-nginx
     env_file: ${SERVER_ENV_FILE:-./.env.app.dist}
-    image: nginx:${NGINX_VERSION:-1.24}-alpine
+    image: nginx:1.24-alpine
     ports:
       - target: 80
         published: ${SERVER_PORT:-80}
@@ -23,4 +26,4 @@ services:
     restart: unless-stopped
 configs:
   nginx_conf:
-    file: ./.docker/nginx/default.conf.template
+    file: ./nginx/default.conf.template
