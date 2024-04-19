@@ -8,10 +8,10 @@ use MaxieSystems\URLReadOnly;
 
 class EngineImplementation extends \MaxieSystems\WebProxy\Engine
 {
-    public function __construct(URLReadOnly $request_url, object $config)
+/*    public function __construct(URLReadOnly $request_url, object $config)
     {
         parent::__construct($request_url, $config);
-    }
+    }*/
 
     protected function getSource(): URLReadOnly
     {
@@ -23,7 +23,7 @@ class EngineImplementation extends \MaxieSystems\WebProxy\Engine
         return new ProxyURL($source_url, $this->config);
     }
 
-    final public function __invoke()// что он должен возвращать?
+    final public function __invoke(WebServer\RequestURL $request_url)// что он должен возвращать?
     {
 /*        foreach ([
             '',
@@ -45,6 +45,6 @@ class EngineImplementation extends \MaxieSystems\WebProxy\Engine
                 echo '<br />';
             }
         }*/
-        $this->Run($this->config->request_url);
+        $this->Run($request_url);
     }
 }

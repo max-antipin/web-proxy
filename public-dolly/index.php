@@ -18,8 +18,7 @@ require_once(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendo
 $serv = new WebProxy\WebServer\Request();
 //var_dump((string)$serv->request_url);
 try {
-    $engine = new \DollySites\Engine($serv->request_url,
-        (object)[
+    $engine = new \DollySites\Engine((object)[
             'script_url' => ['path' => '/site-copy/'],
             'source_url' => 'https://rncb.ru',
         ]);

@@ -26,3 +26,38 @@ docker compose -p txpg-advantshop -f compose.build.yaml
 
 ln -s public public_html
 ```
+
+WebProxy\Engine
+WebProxy\Content abstract
+WebProxy\Content\HtmlContent extends Content
+WebProxy\ContentHandler abstract
+WebProxy\ContentHandler\HtmlHandler extends ContentHandler
+WebProxy\ContentHandler\RemoveScriptsHandler extends HtmlHandler
+WebProxy\ContentHandler\UrlHandler extends HtmlHandler
+
+WebProxy\ContentHandler abstract
+WebProxy\ContentHandler\HtmlHandler extends ContentHandler
+WebProxy\ContentHandler\Action abstract
+WebProxy\ContentHandler\HtmlAction abstract extends Action
+WebProxy\ContentHandler\RemoveScriptsAction extends HtmlAction
+WebProxy\ContentHandler\UrlAction extends HtmlAction
+
+WebProxy\ResponseHandler abstract
+WebProxy\ResponseHandler\HtmlHandler extends ResponseHandler
+WebProxy\ResponseHandler\Action abstract
+WebProxy\ResponseHandler\HtmlAction abstract extends Action
+WebProxy\ResponseHandler\RemoveScriptsAction extends HtmlAction
+WebProxy\ResponseHandler\UrlAction extends HtmlAction
+
+ContentHandler | ResponseHandler
+
+WebProxy\Handler\ContentHandler
+WebProxy\Handler\ContentHandlerMeta - ???
+WebProxy\Handler\Content\HtmlHandler extends ContentHandler
+WebProxy\Handler\Content\CssHandler extends ContentHandler
+
+ResourceType
+WebResource
+
+Handler
+Action|Step

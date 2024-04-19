@@ -14,13 +14,15 @@ new PSR4Autoloader([
     'MaxieSystems' => 'mswlib' . DIRECTORY_SEPARATOR . 'src',
     'DollySites' => 'DollySites',
 ]);*/
-require_once(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');
-$serv = new WebProxy\WebServer\Request();
+require_once(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');// алгоритм автозагрузки может меняться в зависимости от сборки
+$serv = new WebProxy\WebServer\Request();// вероятно, этот функционал стоит перенести в класс WebProxy\App или WebApp
 //var_dump((string)$serv->request_url);
 
-$engine = new WebProxy\EngineImplementation($serv->request_url, new WebProxy\Config());
+$engine = new WebProxy\EngineImplementation(new WebProxy\Config());
+$engine->addResponseHandler('Html');
+$engine->addResponseHandler('Css');
 try {
-    $engine();
+    $engine($serv->request_url);
 } catch (WebProxy\Exception\InvalidSourceException $e) {
     // где-то нужно сделать api - адрес для отправки формы с url, после которого происходит редирект.
     if ('POST' === $_SERVER['REQUEST_METHOD']) {
@@ -38,8 +40,7 @@ try {
     }
     exit();
 }
-/* require_once('.'.DIRECTORY_SEPARATOR.'system'.DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'sys_config.php');
-set_error_handler(['Config', 'HandleError'], E_STRICT & E_DEPRECATED & E_USER_DEPRECATED);// !!!
+/* set_error_handler(['Config', 'HandleError'], E_STRICT & E_DEPRECATED & E_USER_DEPRECATED);// !!!
 Config::DisplayErrors(true);// !!!
 Config::SetOption('debug', true);// !!!
 Config::SetOption('e_root_relative_paths', true);

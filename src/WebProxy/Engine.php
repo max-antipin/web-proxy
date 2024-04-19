@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace MaxieSystems\WebProxy;
 
 use MaxieSystems\WebProxy\URL\ProxyURL;
@@ -7,38 +9,40 @@ use MaxieSystems\WebProxy\URL\SourceURL;
 use MaxieSystems\URL;
 //use MaxieSystems\URLInterface;
 use MaxieSystems\URLReadOnly;
+use MaxieSystems\WebProxy\Error\ConfigurationError;
 
 abstract class Engine// implements MS\IEvents
 {
-    protected function __construct(WebServer\RequestURL $request_url, object $config)
+    public function __construct(object $config)
     {
+        $has_script_url = false;
         $script_url = new URLReadOnly(
             $config->script_url,
-            function (URL &$url) use ($request_url): void {
+            function (URL &$url) use (&$has_script_url): void {
                 $u = new URL('');
-                $this->script_url_configured = $url->scheme && $url->host;
-                $u->copy($this->script_url_configured ? $url : $request_url, 'origin');
-                /* if ($this->script_url_configured) {
+                if ($has_script_url = ($url->scheme && $url->host)) {
+                    $u->copy($url, 'origin');
+                /*
                     if (!URL\Host::isIP($u->host)) {
                         $u->host = URL\DomainName($u->host);
                     }
-                }*/
+                */
+                }
                 $u->path = trim($url->path, '/');
                 $url = $u;
             }
         );
         $this->config = new EngineConfig(
             $script_url,
-            $this->script_url_configured && $config->use_subdomains && ($script_url->host instanceof URL\DomainName),
-            $request_url,
+            $has_script_url && $config->use_subdomains && ($script_url->host instanceof URL\DomainName),
             '1mz9bf0y2c'
         );
         // Определяем $this_origin, а также источник происхождения: из конфига, или определена косвенно; или иначе: постоянная или переменная.
         // Если переменная, то нельзя использовать поддомены и любое сравнение хостов.
         // Если this host - ip-address, то нельзя использовать поддомены и любое сравнение хостов.
         // Для this origin достаточно задать хост: порт по умолчанию, а протокол по факту.
-        $this->scheme_handlers['https'] = $this;
-        $this->scheme_handlers['http'] = $this;
+        $this->schemeHandlers['https'] = $this;
+        $this->schemeHandlers['http'] = $this;
     }
 
     // interface URLConverterInterface??? SchemeHandler & ContentTypeHandler??? HTTPHandler, HTMLHandler
@@ -54,7 +58,7 @@ abstract class Engine// implements MS\IEvents
     {
 //        echo $_SERVER['REQUEST_URI'], '<br />', $request_url, '<br />';
   //      if ($engine->getURLConverter($url))
-        if (!isset($this->scheme_handlers[$request_url->scheme])) {// схемы должны быть привязаны к обработчику?
+        if (!isset($this->schemeHandlers[$request_url->scheme])) {// схемы должны быть привязаны к обработчику?
             throw new Exception\UnsupportedSchemeException();
         }
         $url = new URL($request_url);
@@ -155,7 +159,7 @@ abstract class Engine// implements MS\IEvents
     }
 
     /**
-     * @throws \DollySites\Exception\InvalidSourceException
+     * @throws \MaxieSystems\WebProxy\Exception\InvalidSourceException
      */
     final protected function initSource(URLReadOnly $url): void
     {
@@ -212,10 +216,31 @@ abstract class Engine// implements MS\IEvents
         return false;
     }
 
+    final public function addResponseHandler(string $name, ...$args): ResponseHandler\Config
+    {
+        $ns = __NAMESPACE__ . '\\ResponseHandler';
+        $fqcn = "$ns\\{$name}Handler";
+        $fqcn_config = "$ns\\{$name}Config";
+        if (isset($this->responseHandlers[$name])) {
+            throw new ConfigurationError('Duplicate name: ' . $name);
+        }
+        /** @var ResponseHandler\Config $config */
+        $config = new $fqcn_config($fqcn, $args);
+        foreach ($config->getContentTypes() as $type) {
+            if (isset($this->responseHandlersByType[$type])) {
+                throw new ConfigurationError("Duplicate type: $type [$fqcn]");
+            }
+            $this->responseHandlersByType[$type] = $config;
+        }
+        $this->responseHandlers[$name] = $config;
+        return $config;
+    }
+
     protected readonly EngineConfig $config;
-    private readonly bool $script_url_configured;
     private readonly URLReadOnly $source;
-    private array $scheme_handlers = [];
+    private array $schemeHandlers = [];
+    private array $responseHandlers = [];
+    private array $responseHandlersByType = [];
 
 /*    final public static function CheckScheme(object $url): bool
     {
@@ -264,6 +289,11 @@ abstract class Engine// implements MS\IEvents
          // }
         // else throw new \Exception('Not implemented yet...');
         return $this->base_url;
+    }
+
+    protected function getSourceContent(SourceURL $source_url)
+    {
+        return file_get_contents((string)$source_url);
     }
 
     final protected function Run(URLReadOnly $url)// что он должен возвращать?
@@ -315,7 +345,14 @@ abstract class Engine// implements MS\IEvents
         // if($c = $this->GetOption('filter_url')) $this->ApplyFilter($c, $this->source_url);// фильтр не должен быть здесь, он должен быть при сохранении URL в документе. Но!!! В некоторых случаях здесь может быть фильтрация: например, склейка /index.php, /index.html & /. Но параметры типа fbclid не нужно фильтровать здесь, поскольку они могут быть подставлены вместо оригинальных; а вот те, что открывают редактор или конструктор форм можно фильтровать всегда. А зачем отправлять новый fbclid на сайт-источник? Где удаление "плохих" параметров происходит в dolly 1???
         // $opts = new MS\Containers\Data(['cached' => ['type' => 'bool,null', 'set' => true], 'url_type' => ['type' => 'int', 'value' => $this->url_type]]);
         //echo $src_url;
-        $content = file_get_contents("$src_url");
+        $content = $this->getSourceContent($src_url);
+        $mime = 'text/html';
+        if (isset($this->responseHandlersByType[$mime])) {
+            /** @var ResponseHanler\Config $config */
+            $config = $this->responseHandlersByType[$mime];
+            $handler = $config->newHandler();
+            $content = $handler($content);
+        }
         echo $content;
         die;
         if ('POST' === $_SERVER['REQUEST_METHOD']) {
@@ -544,21 +581,6 @@ abstract class Engine// implements MS\IEvents
             return new HTTP\Proxies($fst->Load());
         }
         return null;
-    }
-
-    final public function AddHandler(string $name, string ...$types): Handlers\Config
-    {
-        if (!$types) {
-            throw new \Exception('Empty types list');
-        }
-        $h = new Handlers\Config($this, $name);
-        foreach ($types as $t) {
-            if (isset($this->handlers[$t])) {
-                throw new \Exception('Duplicate type: ' . $t);
-            }
-            $this->handlers[$t] = $h;
-        }
-        return $h;
     }
 
     // final public function IsCacheableURL(HTTP\Result $result) : bool
@@ -829,7 +851,6 @@ abstract class Engine// implements MS\IEvents
         // return $c($response, $opts, $this);
      // }
     private $http = null;
-    private $handlers = [];
     private $headers = [];
     private $base_url;
     private $cache = false;

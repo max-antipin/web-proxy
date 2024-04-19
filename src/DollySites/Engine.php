@@ -8,9 +8,9 @@ use MaxieSystems\WebProxy;
 
 class Engine extends WebProxy\Engine
 {
-    public function __construct(URLReadOnly $request_url, object $config)
+    public function __construct(object $config)
     {
-        parent::__construct($request_url, $config);
+        parent::__construct($config);
         $this->initSource(new URLReadOnly($config->source_url));
 /*        if(Config::GetOption('debug'))
          {
