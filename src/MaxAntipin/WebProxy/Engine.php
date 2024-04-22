@@ -1,12 +1,14 @@
 <?php
 
-namespace MaxieSystems\WebProxy;
+namespace MaxAntipin\WebProxy;
 
+use MaxieSystems\WebProxy\Exception\InvalidSourceException;
 use MaxieSystems\WebProxy\URL\ProxyURL;
 use MaxieSystems\WebProxy\URL\SourceURL;
+use MaxieSystems\WebProxy\WebServer\RequestURL;
 use MaxieSystems\URLReadOnly;
 
-class EngineImplementation extends \MaxieSystems\WebProxy\Engine
+class Engine extends \MaxieSystems\WebProxy\Engine
 {
 /*    public function __construct(URLReadOnly $request_url, object $config)
     {
@@ -15,7 +17,7 @@ class EngineImplementation extends \MaxieSystems\WebProxy\Engine
 
     protected function getSource(): URLReadOnly
     {
-        throw new Exception\InvalidSourceException();
+        throw new InvalidSourceException();
     }
 
     public function createProxyFromSource(SourceURL $source_url): ProxyURL
@@ -23,7 +25,7 @@ class EngineImplementation extends \MaxieSystems\WebProxy\Engine
         return new ProxyURL($source_url, $this->config);
     }
 
-    final public function __invoke(WebServer\RequestURL $request_url)// что он должен возвращать?
+    final public function __invoke(RequestURL $request_url)// что он должен возвращать?
     {
 /*        foreach ([
             '',

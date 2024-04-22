@@ -18,8 +18,8 @@ require_once(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendo
 $serv = new WebProxy\WebServer\Request();// вероятно, этот функционал стоит перенести в класс WebProxy\App или WebApp
 //var_dump((string)$serv->request_url);
 
-$engine = new WebProxy\EngineImplementation(new WebProxy\Config());
-$engine->addResponseHandler('Html');
+$engine = new \MaxAntipin\WebProxy\Engine(new WebProxy\Config());
+$engine->addResponseHandler('Html')->addAction('Urls');
 $engine->addResponseHandler('Css');
 try {
     $engine($serv->request_url);
@@ -40,31 +40,3 @@ try {
     }
     exit();
 }
-/* set_error_handler(['Config', 'HandleError'], E_STRICT & E_DEPRECATED & E_USER_DEPRECATED);// !!!
-Config::DisplayErrors(true);// !!!
-Config::SetOption('debug', true);// !!!
-Config::SetOption('e_root_relative_paths', true);
-Config::RequireFile('estreams', 'simpleconfig', 'url');
-class DollyConfig extends SimpleConfig
-{
-    const PRODUCT_KEY = '4e3c92b876dc070c2a7dccd592f51b5900';
-    const PRODUCT_VERSION = '2.0.0 b1';
-    const API_HOST = 'api-dollysites.msapis.com';
-    const CP_HOST = 'cp-dollysites.msapis.com';
-
-    final public function GetAdminHost() : string
-     {
-        if($this->admin_host)
-         {
-            if('~' === $this->admin_host && $this->this_host)
-             {
-                return $this->admin_path.'.'.$this->this_host;
-             }
-            return $this->admin_host;
-         }
-        return '';
-     }
-}
-Config::SetErrorStreams(new EStream(DollyConfig::API_HOST, function(array &$h){ $h[] = 'X-Product-Key: '.DollyConfig::PRODUCT_KEY; }, true), new DebugEStream());// !!! На API test сделать вывод запроса, как на msapis.com - взять код оттуда.
-Config::AddSoftware('DollySites', DollyConfig::PRODUCT_VERSION);
-require_once(INC_DIR.'dollysites.php'); */

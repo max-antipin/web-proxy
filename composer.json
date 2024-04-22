@@ -16,7 +16,8 @@
     "autoload": {
         "psr-4": {
             "DollySites\\": "src/DollySites/",
-            "MaxieSystems\\WebProxy\\": "src/WebProxy/"
+            "MaxieSystems\\WebProxy\\": "src/WebProxy/",
+            "MaxAntipin\\": "src/MaxAntipin/"
         }
     },
     "require": {
