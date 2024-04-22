@@ -1,8 +1,8 @@
 <?php
 
-namespace MaxieSystems\WebProxy\ResponseHandler;
+namespace MaxieSystems\WebProxy\ResponseHandler\HTML;
 
-class UrlsAction extends HtmlAction
+class ReplaceURLsAction extends Action
 {
 /*	final public function __invoke(Handlers\WebResource $resource)
 	 {

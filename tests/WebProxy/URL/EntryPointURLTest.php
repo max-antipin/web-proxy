@@ -26,11 +26,17 @@ final class EntryPointURLTest extends TestCase
         $this->assertSame('', $url->query);
     }
 
-    #[DataProvider('URLsWithTypesProvider')]
+    #[DataProvider('dataProviderURLsWithTypes')]
     public function testGetType(string $url, URLType $expected): void
     {
         $u = new EntryPointURL($url);
         $this->assertSame($expected, $u->getType());
     }
 
+    public static function dataProviderURLsWithTypes(): array
+    {
+        return [
+            ['https://website.net/index.html', URLType::Absolute],
+        ];
+    }
 }

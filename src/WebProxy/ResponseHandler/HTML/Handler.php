@@ -1,8 +1,8 @@
 <?php
 
-namespace MaxieSystems\WebProxy\ResponseHandler;
+namespace MaxieSystems\WebProxy\ResponseHandler\HTML;
 
-class HtmlHandler
+class Handler extends \MaxieSystems\WebProxy\ResponseHandler
 {
     public function __invoke($content)
     {

@@ -19,7 +19,7 @@ $serv = new WebProxy\WebServer\Request();// вероятно, этот функ�
 //var_dump((string)$serv->request_url);
 
 $engine = new \MaxAntipin\WebProxy\Engine(new WebProxy\Config());
-$engine->addResponseHandler('Html')->addAction('Urls');
+$engine->addResponseHandler('HTML')->addAction('Urls');
 $engine->addResponseHandler('Css');
 try {
     $engine($serv->request_url);
