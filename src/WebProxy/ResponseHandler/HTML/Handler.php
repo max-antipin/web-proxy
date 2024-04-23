@@ -4,9 +4,14 @@ namespace MaxieSystems\WebProxy\ResponseHandler\HTML;
 
 class Handler extends \MaxieSystems\WebProxy\ResponseHandler
 {
-    public function __invoke($content)
+    public function __invoke(string $content): string
     {
         return $content;
+    }
+
+    protected function configAction(\MaxieSystems\WebProxy\ResponseHandler\Action $action): Action
+    {
+        return $action;
     }
 /*	function __construct(Engine $engine, HTTP\Response $response)
 	 {

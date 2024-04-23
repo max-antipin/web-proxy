@@ -20,6 +20,11 @@
             "MaxAntipin\\": "src/MaxAntipin/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "MaxieSystems\\Tests\\Mock\\": "tests/Mock/"
+        }
+    },
     "require": {
         "php": "8.3.*|8.2.*",
         "maxie-systems/web-lib": "dev-dev"

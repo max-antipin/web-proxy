@@ -218,17 +218,19 @@ abstract class Engine// implements MS\IEvents
 
     final public function addResponseHandler(string $name, ...$args): ResponseHandler\Config
     {
-        $ns = __NAMESPACE__ . '\\ResponseHandler';
-        $fqcn = "$ns\\{$name}Handler";
-        $fqcn_config = "$ns\\{$name}Config";
-        if (isset($this->responseHandlers[$name])) {
-            throw new ConfigurationError('Duplicate name: ' . $name);
+        $pos = strrpos($name, '\\');
+        if (false === $pos) {
+            $ns = __NAMESPACE__;
+        } else {
+            $ns = substr($name, 0, $pos);
+            $name = substr($name, $pos + 1);
         }
+        $fqcn_config = "$ns\\ResponseHandler\\{$name}\\Config";
         /** @var ResponseHandler\Config $config */
-        $config = new $fqcn_config($fqcn, $args);
+        $config = new $fqcn_config($args);
         foreach ($config->getContentTypes() as $type) {
             if (isset($this->responseHandlersByType[$type])) {
-                throw new ConfigurationError("Duplicate type: $type [$fqcn]");
+                throw new ConfigurationError("Duplicate type: $type [$fqcn_config]");
             }
             $this->responseHandlersByType[$type] = $config;
         }
@@ -347,10 +349,7 @@ abstract class Engine// implements MS\IEvents
         //echo $src_url;
         $content = $this->getSourceContent($src_url);
         $mime = 'text/html';
-        if (isset($this->responseHandlersByType[$mime])) {
-            /** @var ResponseHanler\Config $config */
-            $config = $this->responseHandlersByType[$mime];
-            $handler = $config->newHandler();
+        if ($handler = $this->getResponseHandler($mime)) {
             $content = $handler($content);
         }
         echo $content;
@@ -401,6 +400,16 @@ abstract class Engine// implements MS\IEvents
         // var_dump($response->headers);//->Send()die;// протестировать !!!
         $response->headers->Send();
         die($content);
+    }
+
+    final protected function getResponseHandler(string $mime): ?ResponseHandler
+    {
+        if (isset($this->responseHandlersByType[$mime])) {
+            /** @var ResponseHanler\Config $config */
+            $config = $this->responseHandlersByType[$mime];
+            return $config->newHandler();
+        }
+        return null;
     }
 
     final public function getProxyURL(SourceURL $url): ProxyURL
@@ -713,20 +722,6 @@ abstract class Engine// implements MS\IEvents
             }
         }
         return $response;
-    }
-
-    final protected function GetHandler(HTTP\Response $r): ?Handlers\Config
-    {
-        if ($r->mime) {
-            $i = $r->mime;
-        } else {
-            throw new \Exception('not implemented yet...');// use a file extension!
-        }
-        if (isset($this->handlers[$i])) {
-            require_once(MS\INC_DIR . 'handlers.php');
-            return $this->handlers[$i];
-        }
-        return null;
     }
 
     private function HandleResponse_GET(MS\HTTP\Response $response, MS\Containers\Data $opts = null)

@@ -14,11 +14,12 @@ new PSR4Autoloader([
     'MaxieSystems' => 'mswlib' . DIRECTORY_SEPARATOR . 'src',
     'DollySites' => 'DollySites',
 ]);*/
-require_once(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');// алгоритм автозагрузки может меняться в зависимости от сборки
+$appRoot = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+require_once($appRoot . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');// алгоритм автозагрузки может меняться в зависимости от сборки
 $serv = new WebProxy\WebServer\Request();// вероятно, этот функционал стоит перенести в класс WebProxy\App или WebApp
 //var_dump((string)$serv->request_url);
 
-$engine = new \MaxAntipin\WebProxy\Engine(new WebProxy\Config());
+$engine = new \MaxAntipin\WebProxy\Engine(new WebProxy\Config($appRoot . 'config'));
 $engine->addResponseHandler('HTML')->addAction('Urls');
 $engine->addResponseHandler('Css');
 try {
@@ -36,7 +37,7 @@ try {
         }
         http_response_code(400);
     } else {
-        require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . 'main.html';
+        require $appRoot . 'templates' . DIRECTORY_SEPARATOR . 'main.html';
     }
     exit();
 }
