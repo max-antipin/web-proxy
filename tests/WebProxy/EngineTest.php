@@ -45,11 +45,13 @@ final class EngineTest extends TestCase
     {
         $rc = new \ReflectionClass($engine);
         $m = $rc->getMethod('getResponseHandler');
-        $m->setAccessible(true);
         $this->assertNull($m->invoke($engine, 'application/json'));
         $handler = $m->invoke($engine, 'text/html');
+        $this->assertInstanceOf(ResponseHandler\HTML\Handler::class, $handler);
         $handler = $m->invoke($engine, 'image/jpeg');
+        $this->assertInstanceOf(\DollySites\ResponseHandler\Image\Handler::class, $handler);
         $handler = $m->invoke($engine, 'text/css');
+        $this->assertInstanceOf(ResponseHandler\CSS\Handler::class, $handler);
     }
 
     private function createEngine(): Engine
