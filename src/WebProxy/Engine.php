@@ -13,7 +13,7 @@ use MaxieSystems\WebProxy\Error\ConfigurationError;
 
 abstract class Engine// implements MS\IEvents
 {
-    public function __construct(object $config)
+    public function __construct(Config $config)
     {
         $has_script_url = false;
         $script_url = new URLReadOnly(

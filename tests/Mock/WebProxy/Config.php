@@ -2,7 +2,7 @@
 
 namespace MaxieSystems\Tests\Mock\WebProxy;
 
-class Config
+class Config extends \MaxieSystems\WebProxy\Config
 {
     final public function __construct(
         public readonly string $script_url,

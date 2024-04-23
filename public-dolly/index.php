@@ -14,14 +14,12 @@ new PSR4Autoloader([
     'MaxieSystems' => 'mswlib' . DIRECTORY_SEPARATOR . 'src',
     'DollySites' => 'DollySites',
 ]);*/
+$appRoot = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
 require_once(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');
 $serv = new WebProxy\WebServer\Request();
 //var_dump((string)$serv->request_url);
 try {
-    $engine = new \DollySites\Engine((object)[
-            'script_url' => ['path' => '/site-copy/'],
-            'source_url' => 'https://rncb.ru',
-        ]);
+    $engine = new \DollySites\Engine(new WebProxy\FileConfig($appRoot . 'config.dolly'));
 } catch (WebProxy\Exception\InvalidSourceException $e) {
     echo 'отправить в админку для ввода адреса сайта';
     exit();
@@ -30,7 +28,6 @@ $engine($serv->request_url);
 
 /* require_once('.'.DIRECTORY_SEPARATOR.'system'.DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'sys_config.php');
 set_error_handler(['Config', 'HandleError'], E_STRICT & E_DEPRECATED & E_USER_DEPRECATED);// !!!
-Config::DisplayErrors(true);// !!!
 Config::SetOption('debug', true);// !!!
 Config::SetOption('e_root_relative_paths', true);
 Config::RequireFile('estreams', 'simpleconfig', 'url');
