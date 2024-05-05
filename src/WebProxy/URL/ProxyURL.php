@@ -4,7 +4,7 @@ namespace MaxieSystems\WebProxy\URL;
 
 use MaxieSystems\URL;
 use MaxieSystems\URLReadOnly;
-use MaxieSystems\WebProxy\EngineConfig;
+use MaxieSystems\WebProxy\Engine\Config;
 
 /**
  * Proxy URL всегда указывает на хост скрипта
@@ -13,7 +13,7 @@ class ProxyURL extends URLReadOnly
 {
     final public function __construct(
         private readonly SourceURL $source,
-        private readonly EngineConfig $config,
+        private readonly Config $config,
         callable $on_create = null
     ) {
         if (null === $on_create) {
@@ -34,17 +34,17 @@ class ProxyURL extends URLReadOnly
             }
         }
         if ($transform) {
-            if ($this->config->use_subdomains) {
+            if ($this->config->useSubdomains) {
                 $new_host = $this->addSourceOriginToSubdomain($url->scheme, $host, $url->port);
             } else {
                 $url->path = $this->addSourceOriginToPath($url->scheme, $host, $url->port, $url->path);
             }
         }
-        if ($this->config->script_url->path) {
-            $url->path = '/' . $this->config->script_url->path . '/' . $url->path;
+        if ($this->config->scriptURL->path) {
+            $url->path = '/' . $this->config->scriptURL->path . '/' . $url->path;
         }
-        $url->copy($this->config->script_url, 'origin');
-        if ($transform && $this->config->use_subdomains) {
+        $url->copy($this->config->scriptURL, 'origin');
+        if ($transform && $this->config->useSubdomains) {
             $url->host = $new_host;
         }
     }
@@ -77,7 +77,7 @@ class ProxyURL extends URLReadOnly
         function base64_decode_url($string) {
             return base64_decode(str_replace(['-','_'], ['+','/'], $string));
         }*/
-        return $sub . $this->config->script_url->host;
+        return $sub . $this->config->scriptURL->host;
     }
 
     private readonly ?\Closure $on_create;

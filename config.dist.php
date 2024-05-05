@@ -1,0 +1,5 @@
+<?php
+return [
+    'scriptURL' => '',
+    'useSubdomains' => ''
+];

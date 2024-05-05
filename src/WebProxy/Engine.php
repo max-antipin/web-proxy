@@ -13,14 +13,14 @@ use MaxieSystems\WebProxy\Error\ConfigurationError;
 
 abstract class Engine// implements MS\IEvents
 {
-    public function __construct(object $config)
+    public function __construct(Engine\ConfigStorage $config)
     {
-        $has_script_url = false;
-        $script_url = new URLReadOnly(
-            $config->script_url,
-            function (URL &$url) use (&$has_script_url): void {
+        $has_scriptURL = false;
+        $scriptURL = new URLReadOnly(
+            $config->scriptURL,
+            function (URL &$url) use (&$has_scriptURL): void {
                 $u = new URL('');
-                if ($has_script_url = ($url->scheme && $url->host)) {
+                if ($has_scriptURL = ($url->scheme && $url->host)) {
                     $u->copy($url, 'origin');
                 /*
                     if (!URL\Host::isIP($u->host)) {
@@ -32,9 +32,9 @@ abstract class Engine// implements MS\IEvents
                 $url = $u;
             }
         );
-        $this->config = new EngineConfig(
-            $script_url,
-            $has_script_url && $config->use_subdomains && ($script_url->host instanceof URL\DomainName),
+        $this->config = new Engine\Config(
+            $scriptURL,
+            $has_scriptURL && $config->useSubdomains && ($scriptURL->host instanceof URL\DomainName),
             '1mz9bf0y2c'
         );
         // Определяем $this_origin, а также источник происхождения: из конфига, или определена косвенно; или иначе: постоянная или переменная.
@@ -47,12 +47,12 @@ abstract class Engine// implements MS\IEvents
 
     // interface URLConverterInterface??? SchemeHandler & ContentTypeHandler??? HTTPHandler, HTMLHandler
     //public function getProxyURL(ExtractedURL $url): ProxyURL
-    //public function URLConverter::sourceToProxy($source_url): ProxyURL
-    //public function URLConverter::getProxyFromSource($source_url): ProxyURL
+    //public function URLConverter::sourceToProxy($sourceURL): ProxyURL
+    //public function URLConverter::getProxyFromSource($sourceURL): ProxyURL
     //public function getSourceURL(URLInterface $request_url): SourceURL
     //public function SourceURL::createFromRequest($request_url)
     // if ($this->isConvertable())
-    abstract public function createProxyFromSource(SourceURL $source_url): ProxyURL;
+    abstract public function createProxyFromSource(SourceURL $sourceURL): ProxyURL;
 
     final public function getSourceURL(WebServer\RequestURL $request_url): SourceURL
     {
@@ -62,7 +62,7 @@ abstract class Engine// implements MS\IEvents
             throw new Exception\UnsupportedSchemeException();
         }
         $url = new URL($request_url);
-        if ($this->config->use_subdomains) {
+        if ($this->config->useSubdomains) {
             throw new \Exception('not implemented yet...');
         }// && (string)$this->this_host !== (string)$this->base_url->host
          // {
@@ -85,7 +85,7 @@ abstract class Engine// implements MS\IEvents
          // }
         // else
         // URL::IsAbsolute($url, $ut);//'absolute' !== $ut ||
-        if ($this->config->script_url->path) {
+        if ($this->config->scriptURL->path) {
             // нужно удалять директорию, если задана директория скрипта
             $ends_w_slash = false;
             $url->path = new URL\Path\Segments($url->path, function (string $segment, int $i, int $last_i) use (&$ends_w_slash): ?string {
@@ -98,7 +98,7 @@ abstract class Engine// implements MS\IEvents
                 return $segment;
             });
             $path = null;
-            if ($url->path->startsWith($this->config->script_url->path, $path)) {
+            if ($url->path->startsWith($this->config->scriptURL->path, $path)) {
                 $url->path = '/' . $path;// trailing slash!!!
                 if ($url->path !== '/' && $ends_w_slash) {
                     $url->path .= '/';
@@ -238,7 +238,7 @@ abstract class Engine// implements MS\IEvents
         return $config;
     }
 
-    protected readonly EngineConfig $config;
+    protected readonly Engine\Config $config;
     private readonly URLReadOnly $source;
     private array $schemeHandlers = [];
     private array $responseHandlers = [];
@@ -293,9 +293,9 @@ abstract class Engine// implements MS\IEvents
         return $this->base_url;
     }
 
-    protected function getSourceContent(SourceURL $source_url)
+    protected function getSourceContent(SourceURL $sourceURL)
     {
-        return file_get_contents((string)$source_url);
+        return file_get_contents((string)$sourceURL);
     }
 
     final protected function Run(URLReadOnly $url)// что он должен возвращать?
@@ -342,10 +342,10 @@ abstract class Engine// implements MS\IEvents
         // echo '<pre>', var_dump((string)$url), '</pre>', 'URL type: ';
         // здесь проверять наличие папки внутри path// теперь, если указан каталог, то его нужно "прибавлять" к началу URL path - это означает, что копируется некий сайт из папки и переносится в корень этого сайта.
         // if(0 === $type) // распространяется только на этот домен, но не поддомены\внешние.
-        // if(false === $this->Uncover($this->source_url, $this->url_type)) HTTP::Status(404);
-        // if(null === $this->url_type) throw new \Exception('Invalid URL type: '.MS\Config::GetVarType($this->url_type));
-        // if($c = $this->GetOption('filter_url')) $this->ApplyFilter($c, $this->source_url);// фильтр не должен быть здесь, он должен быть при сохранении URL в документе. Но!!! В некоторых случаях здесь может быть фильтрация: например, склейка /index.php, /index.html & /. Но параметры типа fbclid не нужно фильтровать здесь, поскольку они могут быть подставлены вместо оригинальных; а вот те, что открывают редактор или конструктор форм можно фильтровать всегда. А зачем отправлять новый fbclid на сайт-источник? Где удаление "плохих" параметров происходит в dolly 1???
-        // $opts = new MS\Containers\Data(['cached' => ['type' => 'bool,null', 'set' => true], 'url_type' => ['type' => 'int', 'value' => $this->url_type]]);
+        // if(false === $this->Uncover($this->sourceURL, $this->urlType)) HTTP::Status(404);
+        // if(null === $this->urlType) throw new \Exception('Invalid URL type: '.MS\Config::GetVarType($this->urlType));
+        // if($c = $this->GetOption('filter_url')) $this->ApplyFilter($c, $this->sourceURL);// фильтр не должен быть здесь, он должен быть при сохранении URL в документе. Но!!! В некоторых случаях здесь может быть фильтрация: например, склейка /index.php, /index.html & /. Но параметры типа fbclid не нужно фильтровать здесь, поскольку они могут быть подставлены вместо оригинальных; а вот те, что открывают редактор или конструктор форм можно фильтровать всегда. А зачем отправлять новый fbclid на сайт-источник? Где удаление "плохих" параметров происходит в dolly 1???
+        // $opts = new MS\Containers\Data(['cached' => ['type' => 'bool,null', 'set' => true], 'urlType' => ['type' => 'int', 'value' => $this->urlType]]);
         //echo $src_url;
         $content = $this->getSourceContent($src_url);
         $mime = 'text/html';
@@ -358,14 +358,14 @@ abstract class Engine// implements MS\IEvents
             $response = $this->GetResponse($src_url, $_POST, 'POST');
             // if($c = $this->GetOption('filter_response'))
              // {
-                // $r = $c($_SERVER['REQUEST_METHOD'], $response->code, $response->mime, clone $source_url, $url_type, null, $this);
+                // $r = $c($_SERVER['REQUEST_METHOD'], $response->code, $response->mime, clone $sourceURL, $urlType, null, $this);
                 // if(false === $r) HTTP::Status(404);
                 // elseif($r) HTTP::Status($r);
              // }
         } elseif ($cache = $this->GetCache()) {
                 // $this->SetBaseURL($url);// когда происходит редирект, кто устанавливает base URL?
             if ($meta = $cache->GetMeta($src_url)) {
-                // $response = new HTTPResponse($cache, $meta, $this->url_type);
+                // $response = new HTTPResponse($cache, $meta, $this->urlType);
                 // $opts->cached = true;
             } else {
                 $response = $this->GetResponse($src_url);//$opts->cached = false;
@@ -376,8 +376,8 @@ abstract class Engine// implements MS\IEvents
                 // $this->ApplyFilter($c, $response, $opts);// кэшированный тоже нужно фильтровать??? это должно быть в другом месте, потому что response получается не только здесь !!!
                 // if($use_cache && null === $opts->cached)
                  // {
-                    // $cache->Delete($response->url, $opts->url_type);
-                    // $response = $this->GetResponse($this->source_url);
+                    // $cache->Delete($response->url, $opts->urlType);
+                    // $response = $this->GetResponse($this->sourceURL);
                  // }
              // }
                  // var_dump($this->IsCacheable($res));
@@ -436,7 +436,7 @@ abstract class Engine// implements MS\IEvents
              }
             elseif(1 === $is_sub)# Поддомен: URL преобразуется в любом случае, даже если он не кэшируется (например, если указано правило "кэшировать, кроме").
              {
-                // if($this->GetOption('use_subdomains')) $new_host = URL::AddDomainLabel($this->base_url->host, 'www', $label);
+                // if($this->GetOption('useSubdomains')) $new_host = URL::AddDomainLabel($this->base_url->host, 'www', $label);
                 $u_sub = 1;
                 $u_mod = 2;
              }
@@ -462,7 +462,7 @@ abstract class Engine// implements MS\IEvents
             } elseif (-1 === $u_sub) {# "Внешний" домен: нужна проверка настроек кэширования.
                 $u_mod = ('*' === $mime) || $this->IsCacheableURL_external($url, $mime) ? 2 : 0;// Здесь должен подставляться MIME !!!
             } elseif (1 === $u_sub) {# Поддомен: URL преобразуется в любом случае, даже если он не кэшируется (например, если указано правило "кэшировать, кроме").
-                // if($this->GetOption('use_subdomains')) $new_host = URL::AddDomainLabel($this->base_url->host, 'www', $label);
+                // if($this->GetOption('useSubdomains')) $new_host = URL::AddDomainLabel($this->base_url->host, 'www', $label);
                 $u_mod = 2;
             }
             $u_src = URL::FromObject($url, true);
@@ -660,7 +660,7 @@ abstract class Engine// implements MS\IEvents
         return false;
     }
 
-    final protected function GetResponse(URL $source_url, array $data = [], $m = 'GET'): HTTP\Response
+    final protected function GetResponse(URL $sourceURL, array $data = [], $m = 'GET'): HTTP\Response
     {
         if (null === $this->http) {
             $o = ['follow_location' => 10, 'user_agent' => true, ];
@@ -676,9 +676,9 @@ abstract class Engine// implements MS\IEvents
             }
             $this->http = new HTTP\Request($o);
         }
-        $r = $this->http->$m($source_url, $data/* , ['on_redirect' => function($r, $new_url) use($source_url){// #7 (работа с поддоменами) должен выполняться (быть реализован) здесь!!!
-                // $source_url = $r->url;// ???
-                if($is_sub = $source_url->host->IsSubdomain($new_url->host, $label))
+        $r = $this->http->$m($sourceURL, $data/* , ['on_redirect' => function($r, $new_url) use($sourceURL){// #7 (работа с поддоменами) должен выполняться (быть реализован) здесь!!!
+                // $sourceURL = $r->url;// ???
+                if($is_sub = $sourceURL->host->IsSubdomain($new_url->host, $label))
                  {
                     if('www' === $label)
                      {
@@ -689,7 +689,7 @@ abstract class Engine// implements MS\IEvents
                  }
                 elseif(0 === $is_sub) ;// хосты равны.
                 else ;// !!! если хосты совсем не равны.
-                if("$source_url->path" !== "$new_url->path")
+                if("$sourceURL->path" !== "$new_url->path")
                  {
                     if(0 === $is_sub || ($is_sub && 'www' === $label))
                      {
@@ -741,12 +741,12 @@ abstract class Engine// implements MS\IEvents
                     // var_dump($index);
                     // die;
                     if (null === $index) {
-                        $response = $this->GetResponse($this->source_url);
+                        $response = $this->GetResponse($this->sourceURL);
                         $opts->cached = false;
                         return $this->HandleResponse_GET($response, $opts);
                     } else {
                         if ($index <= $transform->max + 1) {
-                            $cache_writer = new CacheWriter($this->GetCache(), $response, $opts->url_type);
+                            $cache_writer = new CacheWriter($this->GetCache(), $response, $opts->urlType);
                         }
                         $response = new $hc($response, $this);
                         foreach ($transform->objects as $k => $v) {
@@ -760,12 +760,12 @@ abstract class Engine// implements MS\IEvents
                         }
                     }
                 } elseif (null === $response->GetIndex()) {
-                    $response = $this->GetResponse($this->source_url);
+                    $response = $this->GetResponse($this->sourceURL);
                     $opts->cached = false;
                     return $this->HandleResponse_GET($response, $opts);
                 }
             } else {
-                $cache_writer = new CacheWriter($this->GetCache(), $response, $opts->url_type);
+                $cache_writer = new CacheWriter($this->GetCache(), $response, $opts->urlType);
                 $response = new $hc($response, $this);
                 if ($transform->objects) {
                     $prev_k = null;
@@ -802,20 +802,20 @@ abstract class Engine// implements MS\IEvents
         } elseif ($opts->cached) {
             if (null === $response->GetIndex()) {
                 $opts->cached = false;
-                return $this->HandleResponse_GET($this->GetResponse($this->source_url), $opts);
+                return $this->HandleResponse_GET($this->GetResponse($this->sourceURL), $opts);
             } elseif ($c = $this->GetOption('no_handler')) {
                 $this->ApplyNoHandler($c, $response, $opts);
                 if (!$opts->cached) {
                     if (null === $opts->cached) {
-                        $this->GetCache()->Delete($response->url, $opts->url_type);
+                        $this->GetCache()->Delete($response->url, $opts->urlType);
                     }
-                    return $this->HandleResponse_GET($this->GetResponse($this->source_url), $opts);
+                    return $this->HandleResponse_GET($this->GetResponse($this->sourceURL), $opts);
                 }
             }
         } elseif ($c = $this->GetOption('no_handler')) {
             $this->ApplyNoHandler($c, $response, $opts);
             if (null !== $opts->cached) {
-                $cache_writer = new CacheWriter($this->GetCache(), $response, $opts->url_type);
+                $cache_writer = new CacheWriter($this->GetCache(), $response, $opts->urlType);
                 $cache_writer->SetContent(0, null, $response, null);
             }
         }
@@ -825,7 +825,7 @@ abstract class Engine// implements MS\IEvents
     // final private function ApplyFilter($c, ...$args)
      // {
         // $content = $content_type = false;
-        // $args[] = $this->url_type;// чтобы ни один идиот не додумался менять $url_type, передаётся его копия
+        // $args[] = $this->urlType;// чтобы ни один идиот не додумался менять $urlType, передаётся его копия
         // $args[] = $_SERVER['REQUEST_METHOD'];
         // $args[] = $this;
         // $args[] = &$content;

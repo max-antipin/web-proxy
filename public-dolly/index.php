@@ -14,14 +14,18 @@ new PSR4Autoloader([
     'MaxieSystems' => 'mswlib' . DIRECTORY_SEPARATOR . 'src',
     'DollySites' => 'DollySites',
 ]);*/
-require_once(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');
+$appRoot = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+require_once($appRoot . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');
 $serv = new WebProxy\WebServer\Request();
 //var_dump((string)$serv->request_url);
+//new \DollySites\Engine\ConfigFilePhp($appRoot . 'config');
 try {
-    $engine = new \DollySites\Engine((object)[
-            'script_url' => ['path' => '/site-copy/'],
-            'source_url' => 'https://rncb.ru',
-        ]);
+    $engine = new \DollySites\Engine(
+        new Tests\Stub\DollySites\Engine\ConfigStorageStub(
+            scriptURL: '',//['path' => '/site-copy/'],
+            sourceURL: 'https://rncb.ru',
+        )
+    );
 } catch (WebProxy\Exception\InvalidSourceException $e) {
     echo 'отправить в админку для ввода адреса сайта';
     exit();

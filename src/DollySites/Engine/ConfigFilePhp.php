@@ -1,8 +1,8 @@
 <?php
 
-namespace MaxieSystems\WebProxy;
+namespace DollySites\Engine;
 
-class Config
+final class ConfigFilePhp extends ConfigStorage
 {
     final public function __construct(string $file_name) {
         $this->data = (require $file_name . '.php');

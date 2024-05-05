@@ -11,7 +11,7 @@ class Engine extends WebProxy\Engine
     public function __construct(object $config)
     {
         parent::__construct($config);
-        $this->initSource(new URLReadOnly($config->source_url));
+        $this->initSource(new URLReadOnly($config->sourceURL));
 /*        if(Config::GetOption('debug'))
          {
             require_once(MS\INC_DIR.'debugconsole.php');
@@ -19,7 +19,7 @@ class Engine extends WebProxy\Engine
          }*/
         // $scheme = MS\Config::GetProtocol();// схема этого сайта определяется автоматически, поскольку ранее стоит проверка и редирект на https с http.
         // $o = ['type' => 'string,len_gt0'];
-        // if(empty($options['use_subdomains']))
+        // if(empty($options['useSubdomains']))
          // {
             // $o['value'] = '';
             // $o['__set'] = function(&$v){ if(!$v) $v = $this->GetThisHost(); };
@@ -47,14 +47,14 @@ class Engine extends WebProxy\Engine
             // 'filter_url' => ['type' => 'closure,null'],
             // 'filter_response' => ['type' => 'closure,null'],
             // 'no_handler' => ['type' => 'closure,null'],
-            // 'use_subdomains' => ['type' => 'bool', 'value' => false],
+            // 'useSubdomains' => ['type' => 'bool', 'value' => false],
         // ]);
         // $this->SetOptionsData($options);
     }
 
-    public function createProxyFromSource(WebProxy\URL\SourceURL $source_url): WebProxy\URL\ProxyURL
+    public function createProxyFromSource(WebProxy\URL\SourceURL $sourceURL): WebProxy\URL\ProxyURL
     {
-        return new WebProxy\URL\ProxyURL($source_url, $this->config, function(WebProxy\URL\SourceURL $url, string &$host){
+        return new WebProxy\URL\ProxyURL($sourceURL, $this->config, function(WebProxy\URL\SourceURL $url, string &$host){
             $host;
         });
     }
@@ -67,7 +67,7 @@ class Engine extends WebProxy\Engine
 
 /*    protected function getSource(): URLReadOnly
     {
-        return new URLReadOnly($this->config->source_url);
+        return new URLReadOnly($this->config->sourceURL);
     }*/
 
     final public function GetCache(): ?Cache

@@ -20,9 +20,9 @@ class Engine extends \MaxieSystems\WebProxy\Engine
         throw new InvalidSourceException();
     }
 
-    public function createProxyFromSource(SourceURL $source_url): ProxyURL
+    public function createProxyFromSource(SourceURL $sourceURL): ProxyURL
     {
-        return new ProxyURL($source_url, $this->config);
+        return new ProxyURL($sourceURL, $this->config);
     }
 
     final public function __invoke(RequestURL $request_url)// что он должен возвращать?

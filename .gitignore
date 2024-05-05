@@ -5,4 +5,6 @@ src/system/
 !.env.dist
 !.env.*.dist
 .phpunit.result.cache
+config.php
+phpstan.neon
 /vendor/

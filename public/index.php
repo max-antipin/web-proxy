@@ -19,8 +19,9 @@ require_once($appRoot . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php');// ал
 $serv = new WebProxy\WebServer\Request();// вероятно, этот функционал стоит перенести в класс WebProxy\App или WebApp
 //var_dump((string)$serv->request_url);
 
-$engine = new \MaxAntipin\WebProxy\Engine(new WebProxy\Config($appRoot . 'config'));
-$engine->addResponseHandler('HTML')->addAction('Urls');
+$engine = new \MaxAntipin\WebProxy\Engine(new WebProxy\Engine\ConfigFilePhp($appRoot . 'config'));
+//$engine->addResponseHandler('HTML')->addAction('Urls');// !!! test case!
+$engine->addResponseHandler('HTML')->addAction('ReplaceURLs');
 $engine->addResponseHandler('Css');
 try {
     $engine($serv->request_url);
