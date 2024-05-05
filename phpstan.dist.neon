@@ -1,8 +1,9 @@
 parameters:
     phpVersion: 80200
-    level: 4
+    level: 6
     paths:
-        - .
+        - src/
+        - tests/
     excludePaths:
         - vendor
     bootstrapFiles:

@@ -35,7 +35,7 @@ abstract class Engine// implements MS\IEvents
         $this->config = new Engine\Config(
             $scriptURL,
             $has_scriptURL && $config->useSubdomains && ($scriptURL->host instanceof URL\DomainName),
-            '1mz9bf0y2c'
+            $config->delimiter ?: '1mz9bf0y2c'
         );
         // Определяем $this_origin, а также источник происхождения: из конфига, или определена косвенно; или иначе: постоянная или переменная.
         // Если переменная, то нельзя использовать поддомены и любое сравнение хостов.

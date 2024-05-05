@@ -10,8 +10,12 @@ namespace DollySites\Engine;
  */
 abstract class ConfigStorage extends \MaxieSystems\WebProxy\Engine\ConfigStorage
 {
-    public readonly string $sourceURL;
-    public readonly string $scriptURL;
-    public readonly bool $useSubdomains;
-    public readonly string $delimiter;
+    protected function __construct(
+        public readonly string $sourceURL,
+        string $scriptURL,
+        bool $useSubdomains,
+        string $delimiter,
+    ) {
+        parent::__construct($scriptURL, $useSubdomains, $delimiter);
+    }
 }

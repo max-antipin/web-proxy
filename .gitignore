@@ -1,5 +1,3 @@
-src/PSR4Autoloader.php
-src/system/
 .env
 .env.*
 !.env.dist
