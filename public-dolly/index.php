@@ -34,7 +34,6 @@ $engine($serv->request_url);
 
 /* require_once('.'.DIRECTORY_SEPARATOR.'system'.DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'sys_config.php');
 set_error_handler(['Config', 'HandleError'], E_STRICT & E_DEPRECATED & E_USER_DEPRECATED);// !!!
-Config::DisplayErrors(true);// !!!
 Config::SetOption('debug', true);// !!!
 Config::SetOption('e_root_relative_paths', true);
 Config::RequireFile('estreams', 'simpleconfig', 'url');

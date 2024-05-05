@@ -22,7 +22,7 @@ $serv = new WebProxy\WebServer\Request();// вероятно, этот функ�
 $engine = new \MaxAntipin\WebProxy\Engine(new WebProxy\Engine\ConfigFilePhp($appRoot . 'config'));
 //$engine->addResponseHandler('HTML')->addAction('Urls');// !!! test case!
 $engine->addResponseHandler('HTML')->addAction('ReplaceURLs');
-$engine->addResponseHandler('Css');
+$engine->addResponseHandler('CSS');
 try {
     $engine($serv->request_url);
 } catch (WebProxy\Exception\InvalidSourceException $e) {
