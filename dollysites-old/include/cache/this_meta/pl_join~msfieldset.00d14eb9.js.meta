@@ -1,0 +1,26 @@
+<?php
+return array (
+  'url' => 'https://xn--80aaacqgwobzjvvcgg9s.xn--p1ai/pl_join~msfieldset.00d14eb9.js',
+  'code' => 200,
+  'content_type' => 'text/javascript; charset=utf-8',
+  'headers' => 
+  array (
+    '' => 'HTTP/1.1 200 OK',
+    'Content-Type' => 'Content-Type: text/javascript; charset=utf-8',
+    'Access-Control-Allow-Origin' => 'Access-Control-Allow-Origin: *',
+    'Last-Modified' => 'Last-Modified: Tue, 12 Sep 2017 14:05:55 GMT',
+  ),
+  'stages' => 
+  array (
+    0 => 
+    array (
+      'modified' => 1554886007,
+    ),
+    1 => 
+    array (
+      'modified' => 1554886131,
+      'label' => 'a06',
+    ),
+  ),
+);
+?>

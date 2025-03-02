@@ -1,0 +1,23 @@
+<?php
+return array (
+  'url' => 'https://xn--80aaacqgwobzjvvcgg9s.xn--p1ai/favicon.ico',
+  'code' => 200,
+  'content_type' => 'image/x-icon',
+  'headers' => 
+  array (
+    '' => 'HTTP/1.1 200 OK',
+    'Content-Type' => 'Content-Type: image/x-icon',
+    'Last-Modified' => 'Last-Modified: Mon, 27 Feb 2017 10:29:32 GMT',
+    'Etag' => 'Etag: "58b3ff8c-47e"',
+    'Expires' => 'Expires: Fri, 10 May 2019 08:46:45 GMT',
+    'Accept-Ranges' => 'Accept-Ranges: bytes',
+  ),
+  'stages' => 
+  array (
+    0 => 
+    array (
+      'modified' => 1554886008,
+    ),
+  ),
+);
+?>

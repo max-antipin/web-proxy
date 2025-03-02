@@ -1,0 +1,51 @@
+.text_changer .column {
+  clear: both;
+  display: inline-block;
+  width: 100%;
+  position:relative;
+}
+.text_changer .textbox,
+.text_changer .magic_textarea {
+  display: block;
+  width: 100%;
+  background: #f6f8fa;
+  border: 1px solid #dee0e3;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  padding: 10px 19px;
+  position: relative;
+  min-height: 41px;
+  overflow: hidden;
+  margin-top: 15px;
+  box-sizing: border-box;
+}
+.text_changer .magic_textarea {
+  height: 139px;
+  resize: none;
+  margin-bottom: 5px;
+  overflow-y: auto;
+}
+.text_changer .change_wrap {
+  clear: both;
+}
+.text_changer .change_wrap .change_type {
+  display: inline-block;
+  vertical-align: middle;
+}
+.text_changer .left {
+  float: left;
+  width: 47.5%;
+}
+.text_changer .right {
+  float: right;
+  width: 47.5%;
+}
+.text_changer .right .textbox,
+.text_changer .right .magic_textarea {
+  width: 90%;
+}
+.text_changer .remove{float: right;margin: 16px 16px 0 0;width:24px;height:24px;text-align: center;line-height:24px;position: absolute;right: 0;cursor: pointer;border:1px solid red;border-radius:5px;}
+.text_changer .remove:after {content: "×";color: red;font-size: 16px;}
+.text_changer .buttons {padding: 20px 0;}
+.textarea_wrap.hidden{display:none;}

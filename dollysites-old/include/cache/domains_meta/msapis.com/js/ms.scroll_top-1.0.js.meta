@@ -1,0 +1,24 @@
+<?php
+return array (
+  'url' => 'https://msapis.com/js/ms.scroll_top-1.0.js',
+  'code' => 200,
+  'content_type' => 'application/x-javascript',
+  'headers' => 
+  array (
+    '' => 'HTTP/1.1 200 OK',
+    'Content-Type' => 'Content-Type: application/x-javascript',
+    'Last-Modified' => 'Last-Modified: Wed, 02 Jul 2014 09:14:45 GMT',
+    'Vary' => 'Vary: Accept-Encoding',
+    'Etag' => 'Etag: "53b3cd85-3c5"',
+    'Expires' => 'Expires: Tue, 20 Aug 2019 11:54:15 GMT',
+    'Accept-Ranges' => 'Accept-Ranges: bytes',
+  ),
+  'stages' => 
+  array (
+    0 => 
+    array (
+      'modified' => 1565697255,
+    ),
+  ),
+);
+?>

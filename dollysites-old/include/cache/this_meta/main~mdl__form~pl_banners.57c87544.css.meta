@@ -1,0 +1,27 @@
+<?php
+return array (
+  'url' => 'https://xn--80aaacqgwobzjvvcgg9s.xn--p1ai/main~mdl__form~pl_banners.57c87544.css',
+  'code' => 200,
+  'content_type' => 'text/css; charset=utf-8',
+  'headers' => 
+  array (
+    '' => 'HTTP/1.1 200 OK',
+    'Content-Type' => 'Content-Type: text/css; charset=utf-8',
+    'Access-Control-Allow-Origin' => 'Access-Control-Allow-Origin: *',
+    'Last-Modified' => 'Last-Modified: Sat, 18 Nov 2017 03:45:00 GMT',
+  ),
+  'stages' => 
+  array (
+    0 => 
+    array (
+      'modified' => 1561484305,
+      'label' => '',
+    ),
+    1 => 
+    array (
+      'modified' => 1561484305,
+      'label' => 'a06',
+    ),
+  ),
+);
+?>

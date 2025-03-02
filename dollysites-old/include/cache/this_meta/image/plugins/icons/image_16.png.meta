@@ -1,0 +1,25 @@
+<?php
+return array (
+  'url' => 'https://xn--80aaacqgwobzjvvcgg9s.xn--p1ai/image/plugins/icons/image_16.png',
+  'code' => 200,
+  'content_type' => 'image/png',
+  'headers' => 
+  array (
+    '' => 'HTTP/1.1 200 OK',
+    'Content-Type' => 'Content-Type: image/png',
+    'Last-Modified' => 'Last-Modified: Thu, 04 May 2017 08:58:40 GMT',
+    'Etag' => 'Etag: "590aed40-623"',
+    'Expires' => 'Expires: Thu, 25 Jul 2019 17:38:29 GMT',
+    'Accept-Ranges' => 'Accept-Ranges: bytes',
+    'X-My-Header-3' => 'X-My-Header-3: value 222',
+  ),
+  'stages' => 
+  array (
+    0 => 
+    array (
+      'modified' => 1561484309,
+      'label' => 'Image',
+    ),
+  ),
+);
+?>

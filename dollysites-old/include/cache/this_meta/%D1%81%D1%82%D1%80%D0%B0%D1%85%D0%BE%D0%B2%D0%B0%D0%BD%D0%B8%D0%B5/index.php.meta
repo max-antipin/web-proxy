@@ -1,0 +1,32 @@
+<?php
+return array (
+  'url' => 'https://xn--80aaacqgwobzjvvcgg9s.xn--p1ai/%D1%81%D1%82%D1%80%D0%B0%D1%85%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/',
+  'code' => 200,
+  'content_type' => 'text/html; charset=UTF-8',
+  'headers' => 
+  array (
+    '' => 'HTTP/1.1 200 OK',
+    'Content-Type' => 'Content-Type: text/html; charset=UTF-8',
+    'Vary' => 'Vary: Accept-Encoding',
+    'Expires' => 'Expires: Thu, 19 Nov 1981 08:52:00 GMT',
+  ),
+  'stages' => 
+  array (
+    0 => 
+    array (
+      'modified' => 1566597402,
+      'label' => 'a01:a02',
+    ),
+    1 => 
+    array (
+      'modified' => 1566597402,
+      'label' => 'a01:a02:a03',
+    ),
+    2 => 
+    array (
+      'modified' => 1566597402,
+      'label' => 'a01:a02:a03:a06',
+    ),
+  ),
+);
+?>

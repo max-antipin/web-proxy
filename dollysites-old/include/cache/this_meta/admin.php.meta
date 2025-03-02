@@ -1,0 +1,33 @@
+<?php
+return array (
+  'url' => 'https://xn--80aaacqgwobzjvvcgg9s.xn--p1ai/admin.php',
+  'code' => 200,
+  'content_type' => 'text/html; charset=utf-8',
+  'headers' => 
+  array (
+    '' => 'HTTP/1.1 200 OK',
+    'Content-Type' => 'Content-Type: text/html; charset=utf-8',
+    'Last-Modified' => 'Last-Modified: Mon, 01 Jul 2019 18:03:57 GMT',
+    'Etag' => 'Etag: "5d1a4b0d-112"',
+    'Accept-Ranges' => 'Accept-Ranges: bytes',
+  ),
+  'stages' => 
+  array (
+    0 => 
+    array (
+      'modified' => 1567340360,
+      'label' => 'a01:a02',
+    ),
+    1 => 
+    array (
+      'modified' => 1567340360,
+      'label' => 'a01:a02:a03',
+    ),
+    2 => 
+    array (
+      'modified' => 1567340360,
+      'label' => 'a01:a02:a03:a06',
+    ),
+  ),
+);
+?>

@@ -1,0 +1,27 @@
+<?php
+return array (
+  'url' => 'https://xn--80aaacqgwobzjvvcgg9s.xn--p1ai/pl_huioint~msfieldset.00d14eb9.js',
+  'code' => 200,
+  'content_type' => 'text/javascript; charset=utf-8',
+  'headers' => 
+  array (
+    '' => 'HTTP/1.1 200 OK',
+    'Content-Type' => 'Content-Type: text/javascript; charset=utf-8',
+    'Access-Control-Allow-Origin' => 'Access-Control-Allow-Origin: *',
+    'Last-Modified' => 'Last-Modified: Mon, 20 Feb 2017 02:48:26 GMT',
+  ),
+  'stages' => 
+  array (
+    0 => 
+    array (
+      'modified' => 1561484305,
+      'label' => '',
+    ),
+    1 => 
+    array (
+      'modified' => 1561484305,
+      'label' => 'a06',
+    ),
+  ),
+);
+?>

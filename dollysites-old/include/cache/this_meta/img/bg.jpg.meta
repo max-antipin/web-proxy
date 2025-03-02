@@ -1,0 +1,25 @@
+<?php
+return array (
+  'url' => 'https://xn--80aaacqgwobzjvvcgg9s.xn--p1ai/img/bg.jpg',
+  'code' => 200,
+  'content_type' => 'image/jpeg',
+  'headers' => 
+  array (
+    '' => 'HTTP/1.1 200 OK',
+    'Content-Type' => 'Content-Type: image/jpeg',
+    'Last-Modified' => 'Last-Modified: Sun, 05 Mar 2017 23:31:03 GMT',
+    'Etag' => 'Etag: "58bc9fb7-16806"',
+    'Expires' => 'Expires: Thu, 25 Jul 2019 17:38:29 GMT',
+    'Accept-Ranges' => 'Accept-Ranges: bytes',
+    'X-My-Header-3' => 'X-My-Header-3: value 222',
+  ),
+  'stages' => 
+  array (
+    0 => 
+    array (
+      'modified' => 1561484309,
+      'label' => 'Image',
+    ),
+  ),
+);
+?>
